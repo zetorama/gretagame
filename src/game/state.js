@@ -15,12 +15,13 @@ export const GameStateProvider = ({ children }) => {
 }
 
 export const getInitialGameState = () => ({
+  gameResult: null,
   currentTurn: 0,
   currentCO: 0,
   currentPO: 0,
   maxCO: 100,
   currentMarkerKey: null,
-  markers: {}
+  markerMap: {}
 })
 
 export const getInitialMarker = () => ({
@@ -34,13 +35,27 @@ export const gameReducer = (state, action) => {
   switch (action.type) {
     case 'game:start': 
       return {
+        gameResult: null,
         currentTurn: 1, 
       }
     case 'turn:next':
-      return { 
-        ...state, 
+      const nextCO = calcNextCO(state.markerMap, state.currentCO)
+      return {
+        ...state,
+        gameResult: nextCO > state.maxCO ? 'boiled' : state.gameResult,
+        currentCO: nextCO,
+        currentPO: calcNextPO(state.markerMap, state.currentPO),
         currentTurn: state.currentTurn + 1, 
       }
     default: throw new Error()
   }
+}
+
+//Game logic
+const calcNextCO = (markerMap, currentCO) => {
+  return Object.values(markerMap).reduce((acc, marker) => acc + marker.produceCO, currentCO)
+}
+
+const calcNextPO = (markerMap, currentPO) => {
+  return Object.values(markerMap).reduce((acc, marker) => acc + marker.producePO, currentPO)
 }
