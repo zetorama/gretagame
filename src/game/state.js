@@ -9,7 +9,7 @@ export const useGameState = () => useContext(GameContext)
 export const getInitialGameState = () => ({
   gameResult: null,
   currentTurn: 0,
-  currentCO: 300,
+  currentCO: 600,
   currentPO: 300,
   maxCO: 1000,
   goalCO: 25,

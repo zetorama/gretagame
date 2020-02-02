@@ -62,6 +62,13 @@
   animation: blink 1s alternate infinite cubic-bezier(.5, 0, 1, 1);
 }
 
+.Ui-thermo-meter--boil {
+  width: 1%;
+  margin-left: -.5%;
+  background-color: rgba(250, 22, 11, .3);
+  animation: blink 1s alternate infinite cubic-bezier(.5, 0, 1, 1);
+}
+
 @keyframes blink {
   to {
     opacity: 0;

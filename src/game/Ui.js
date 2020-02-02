@@ -8,9 +8,9 @@ export function Ui({ children }) {
 
   const isStarted = currentTurn > 0
   const currentYear = currentTurn + 2019
-  const currentPos = Math.min(currentCO, maxCO) / maxCO
-  const goalPos = goalCO / maxCO
-
+  const currentPos = Math.min(currentCO / maxCO, 0.9)
+  const goalPos = goalCO / maxCO + 0.1
+  const boilPos = 0.9
   const handleStart = useCallback(() => dispatch({ type: 'game:start' }))
 
   return (
@@ -19,6 +19,7 @@ export function Ui({ children }) {
         <div className='Ui-thermo'>
           <div className='Ui-thermo-meter Ui-thermo-meter--goal' style={{ '--x': goalPos.toFixed(2) }} />
           <div className='Ui-thermo-meter Ui-thermo-meter--current' style={{ '--x': currentPos.toFixed(2) }} />
+            <div className='Ui-thermo-meter Ui-thermo-meter--boil' style={{ '--x': boilPos.toFixed(2) }} />
         </div>
         <div className='Ui-year' style={{ '--x': currentPos.toFixed(2) }} onClick={isStarted ? undefined : handleStart}>
           <div className="Ui-year-text">
