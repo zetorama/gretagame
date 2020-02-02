@@ -16,6 +16,18 @@ export const GameStateProvider = ({ children }) => {
 
 export const getInitialGameState = () => ({
   currentTurn: 0,
+  currentCO: 0,
+  currentPO: 0,
+  maxCO: 100,
+  currentMarkerKey: null,
+  markers: {}
+})
+
+export const getInitialMarker = () => ({
+  type: '',
+  produceCO: 0,
+  producePO: 0,
+  requirePO: 0
 })
 
 export const gameReducer = (state, action) => {
