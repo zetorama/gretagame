@@ -138,44 +138,52 @@ export const markerTemplates = {
     },
 }
 
+let keyId = 0
 export const spotTemplates = [
     {
-        key: 'sp1',
-        lonLatPos: [31.472538, -100.299904],
-        initialMarkerTypes: DisasterTypes
+        key: `spot-${++keyId}`,
+        lonLatPos: [31.472538, -100.299904], // texas
+        initialMarkerTypes: [DeadlyCow]
     },
     {
-        key: 'sp2',
+        
+        key: `spot-${++keyId}`,
         lonLatPos: [45.661794, -67.065206],
-        initialMarkerTypes: DisasterTypes
+        initialMarkerTypes: [GasCar]
     },
     {
-        key: 'sp3',
+        
+        key: `spot-${++keyId}`,
         lonLatPos: [-7.228798, -55.275538],
         initialMarkerTypes: DisasterTypes
     },
     {
-        key: 'sp4',
+        
+        key: `spot-${++keyId}`,
         lonLatPos: [-32.044593, 23.127417],
         initialMarkerTypes: DisasterTypes
     },
     {
-        key: 'sp5',
+        
+        key: `spot-${++keyId}`,
         lonLatPos: [1.809734, 25.423265],
         initialMarkerTypes: DisasterTypes
     },
     {
-        key: 'sp6',
+        
+        key: `spot-${++keyId}`,
         lonLatPos: [48.953031, 7.235110],
         initialMarkerTypes: DisasterTypes
     },
     {
-        key: 'sp7',
+        
+        key: `spot-${++keyId}`,
         lonLatPos: [31.547828, 107.503918],
         initialMarkerTypes: DisasterTypes
     },
     {
-        key: 'sp8',
+        
+        key: `spot-${++keyId}`,
         lonLatPos: [58.063062, 45.403104],
         initialMarkerTypes: DisasterTypes
     }
