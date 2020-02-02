@@ -1,5 +1,6 @@
-import React, { useReducer, useContext, createContext } from 'react'
-import { generateSpots } from './helpers'
+import { useContext, createContext } from 'react'
+import {generateSpots, getMarkerByType} from './helpers'
+import {getRndItem} from "./utils";
 
 export const GameContext = createContext([{}])
 
@@ -47,6 +48,25 @@ export const gameReducer = (state, action) => {
         currentPO: nextPO,
         currentTurn: nextTurn,
       }
+    case 'spot:action':
+      const { spot } = action.payload
+      const { marker } = spot
+      if (marker && marker.nextTypes && marker.requirePO < state.currentPO) {
+        const nextMarker = getMarkerByType(getRndItem(marker.nextTypes))
+        let nextState = {
+          ...state,
+          currentPO: state.currentPO - marker.requirePO,
+          spotMap: {
+            ...state.spotMap,
+            [spot.key]: {
+              ...spot,
+              marker: nextMarker
+            }
+          }
+        }
+        return gameReducer(nextState, {type: 'turn:next'})
+      }
+      return state
     default: throw new Error()
   }
 }
