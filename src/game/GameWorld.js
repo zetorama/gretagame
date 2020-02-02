@@ -1,7 +1,9 @@
-import React, {useRef, useMemo, useEffect} from 'react'
+import React, {useRef, useMemo, useState, useCallback} from 'react'
 import { useFrame,  useLoader } from 'react-three-fiber'
 import * as THREE from 'three'
 import {useGameState} from './state'
+
+import Spot from './Spot'
 
 function GameWorld() {
   const ref = useRef()
@@ -34,6 +36,13 @@ function GameWorld() {
       /> */}
 
       <Atmosphere />
+      <Spot
+        url='/assets/fire.png'
+        scale={.5}
+        position={[0,0, 2.2]}
+        // rotation={[]}
+      />
+
       <Earth />
       <Moon />
     </group>
