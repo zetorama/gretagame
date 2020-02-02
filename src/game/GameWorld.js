@@ -7,7 +7,7 @@ import Spot from './Spot'
 
 function GameWorld() {
   const ref = useRef()
-  const [state] = useGameState()
+  const [state, dispatch] = useGameState()
 
   console.log('%c RENDER GameWorld', 'color:orange', state)
   console.log('%c RENDER GameWorld ------', 'color:orange', Object.values(state.spotMap))
@@ -37,7 +37,7 @@ function GameWorld() {
       /> */}
 
       <Atmosphere />
-      {Object.values(state.spotMap).map(spot => <Spot key={spot.key} spot={spot} />)}
+      {Object.values(state.spotMap).map(spot => <Spot key={spot.key} spot={spot} dispatch={dispatch} />)}
       <Earth />
       <Moon />
     </group>
