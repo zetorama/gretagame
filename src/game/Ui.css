@@ -10,14 +10,23 @@
 }
 
 .Ui-canvas {
+  z-index: 1;
+  position: relative;
   flex: 1;
 
   background-image: radial-gradient(at 50% 70%, #200f20 40%, #090b1f 80%, #050523 100%);
 }
 
-.Ui-header {
+.Ui-header,
+.Ui-footer {
+  z-index: 10;
   position: absolute;
   width: 100%;
+  left: 0;
+  top: 0;
+
+  display: flex;
+  justify-content: center;
 
   padding: .5em;
   text-align: center;
@@ -25,15 +34,51 @@
 }
 
 .Ui-footer {
-  flex: 0;
-  background: navy;
+  top: auto;
+  bottom: 0;
+}
+
+.Ui-resource {
+  max-width: 500px;
+  position: relative;
+
+  width: 100%;
+  height: 0;
+  /* padding-top: 10%; */
+  padding-top: 50px;
+}
+.Ui-resource::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  opacity: .3;
+  background-image: url(/assets/people.png);
+  background-size: auto 100%;
+}
+.Ui-resource-value {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  width: calc(100% * var(--x, 0));
+  background-image: url(/assets/people.png);
+  background-size: auto 100%;
+
+  transition: width .2s ease-in-out;
 }
 
 .Ui-thermo {
+  max-width: 500px;
   position: relative;
   width: 100%;
   height: 0;
-  padding-top: 10%;
+  /* padding-top: 10%; */
+  padding-top: 50px;
   background-image: url(/assets/thermometer.png);
   background-size: 100% 100%;
 }
@@ -71,10 +116,12 @@
 .Ui-year {
   position: absolute;
   left: 50%;
-  top: 90%;
-  width: 20%;
-  padding-top: 14.76%;
-  height: 0;
+  top: 110%;
+
+  /* width: 20%; */
+  /* padding-top: 14.76%; */
+  width: 100px;
+  height: 73px;
   margin-left: -1px;
 
   left: calc(100% * var(--x, .5));
