@@ -1,4 +1,5 @@
 .Ui {
+  position: relative;
   width: 100%;
   height: 100%;
 
@@ -15,8 +16,8 @@
 }
 
 .Ui-header {
-  flex: 0;
-  background: darkblue;
+  position: absolute;
+  width: 100%;
 
   padding: .5em;
   text-align: center;
@@ -26,4 +27,97 @@
 .Ui-footer {
   flex: 0;
   background: navy;
+}
+
+.Ui-thermo {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-top: 10%;
+  background-image: url(/assets/thermometer.png);
+  background-size: 100% 100%;
+}
+.Ui-thermo-meter {
+  position: absolute;
+  left: 0;
+  top: -10%;
+  height: 125%;
+  width: 2%;
+  margin-left: -1%;
+
+  background-color: rgba(222, 11, 11, .8);
+  border-radius: .3em;
+
+  left: calc(100% * var(--x, .5));
+  transition: left .2s ease-in-out;
+}
+.Ui-thermo-meter--current {
+  border: 1px solid black;
+  /* animation: blink 1s alternate infinite cubic-bezier(.5, 0, 1, 1); */
+}
+.Ui-thermo-meter--goal {
+  width: 1%;
+  margin-left: -.5%;
+  background-color: rgba(22, 222, 11, .3);
+  animation: blink 1s alternate infinite cubic-bezier(.5, 0, 1, 1);
+}
+
+@keyframes blink {
+  to {
+    opacity: 0;
+  }
+}
+
+.Ui-year {
+  position: absolute;
+  left: 50%;
+  top: 90%;
+  width: 20%;
+  padding-top: 14.76%;
+  height: 0;
+  margin-left: -1px;
+
+  left: calc(100% * var(--x, .5));
+  transition: left .2s ease-in-out;
+}
+.Ui-year::before,
+.Ui-year::after,
+.Ui-year-text {
+  transform: translateX(-50%);
+}
+
+.Ui-year::before {
+  content: '';
+  position: absolute;
+  top: 28%;
+  left: 1%;
+  right: 10%;
+  bottom: 10%;
+  background: white;
+  box-shadow: inset 4px 2px 4px 5px rgba(22, 0, 0, .5);
+}
+.Ui-year::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background-image: url(/assets/calendar_red.png);
+  background-size: 100% 100%;
+}
+.Ui-year-text {
+  z-index: 2;
+  position: absolute;
+  top: 20%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  color: red;
 }

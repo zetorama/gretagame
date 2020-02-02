@@ -8,9 +8,11 @@ export const useGameState = () => useContext(GameContext)
 export const getInitialGameState = () => ({
   gameResult: null,
   currentTurn: 0,
-  currentCO: 0,
+  currentCO: 66,
   currentPO: 0,
   maxCO: 100,
+  goalCO: 25,
+  reduceCO: 5,
   maxTurn: 20,
   currentSpotKey: null,
   spotMap: {}
