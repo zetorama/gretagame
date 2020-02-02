@@ -33,13 +33,33 @@ function GameWorld() {
         onUpdate={self => self.lookAt(new THREE.Vector3(0, 0, 0))}
       /> */}
 
+      <Atmosphere />
       <Earth />
       <Moon />
     </group>
   )
 }
 
-function Earth({ size = 1.8, position = [0, 0, 0] }) {
+function Atmosphere({ size = 2.2, speed = 1, position = [0, 0, 0] }) {
+  const ref = useRef()
+  const [texture] = useLoader(THREE.TextureLoader, [
+    '/assets/clouds.png',
+  ])
+
+  useFrame(
+    ({ clock }) =>
+      (ref.current.rotation.y = Math.cos(clock.getElapsedTime() / 12) * Math.PI * speed)
+  )
+
+  return (
+    <mesh position={position} ref={ref}>
+      <sphereBufferGeometry attach="geometry" args={[size, 64, 64]} />
+      <meshStandardMaterial attach="material" map={texture} transparent />
+    </mesh>
+  )
+}
+
+function Earth({ size = 2, position = [0, 0, 0] }) {
   const [texture, bump] = useLoader(THREE.TextureLoader, [
     // '/assets/2k_earth_daymap.jpg',
     '/assets/earth.jpg',
