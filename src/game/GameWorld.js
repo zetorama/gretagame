@@ -49,26 +49,36 @@ function GameWorld() {
   )
 }
 
-function Atmosphere({ size = 2.2, speed = 1, position = [0, 0, 0] }) {
-  const ref = useRef()
-  const [texture] = useLoader(THREE.TextureLoader, [
-    '/assets/clouds.png',
+function Atmosphere({ size = 2.1, speed = 1, position = [0, 0, 0], segments = 64 }) {
+  const refOne = useRef()
+  const refTwo = useRef()
+  const [textureOne, textureTwo] = useLoader(THREE.TextureLoader, [
+    '/assets/clouds_one.png',
+    '/assets/clouds_two.png',
   ])
 
   useFrame(
-    ({ clock }) =>
-      (ref.current.rotation.y = Math.cos(clock.getElapsedTime() / 12) * Math.PI * speed)
+    ({ clock }) => {
+      refOne.current.rotation.y = Math.cos(clock.getElapsedTime() / 12) * Math.PI * speed
+      refTwo.current.rotation.y = -1.2 * Math.cos(clock.getElapsedTime() / 12) * Math.PI * speed
+    }
   )
 
   return (
-    <mesh position={position} ref={ref}>
-      <sphereBufferGeometry attach="geometry" args={[size, 64, 64]} />
-      <meshStandardMaterial attach="material" map={texture} transparent />
-    </mesh>
+    <>
+      <mesh position={position} ref={refOne}>
+        <sphereBufferGeometry attach="geometry" args={[size, segments, segments]} />
+        <meshStandardMaterial attach="material" map={textureOne} transparent />
+      </mesh>
+      <mesh position={position} ref={refTwo}>
+        <sphereBufferGeometry attach="geometry" args={[size * 1.01, segments, segments]} />
+        <meshStandardMaterial attach="material" map={textureTwo} transparent />
+      </mesh>
+    </>
   )
 }
 
-function Earth({ size = 2, position = [0, 0, 0] }) {
+function Earth({ size = 2, position = [0, 0, 0], segments = 64 }) {
   const [texture, bump] = useLoader(THREE.TextureLoader, [
     // '/assets/2k_earth_daymap.jpg',
     '/assets/earth.jpg',
@@ -77,20 +87,20 @@ function Earth({ size = 2, position = [0, 0, 0] }) {
 
   return (
     <mesh position={position}>
-      <sphereBufferGeometry attach="geometry" args={[size, 64, 64]} />
+      <sphereBufferGeometry attach="geometry" args={[size, segments, segments]} />
       <meshStandardMaterial attach="material" map={texture} bumpMap={bump} bumpScale={5} />
     </mesh>
   )
 }
 
-function Moon({ size = .66, position = [5, 0, -7] }) {
+function Moon({ size = .66, position = [5, 0, -7], segments = 32 }) {
   const [moon] = useLoader(THREE.TextureLoader, [
     '/assets/2k_moon.jpg',
   ])
 
   return (
     <mesh position={position}>
-      <sphereBufferGeometry attach="geometry" args={[size, 32, 32]} />
+      <sphereBufferGeometry attach="geometry" args={[size, segments, segments]} />
       <meshStandardMaterial attach="material" color="gray" map={moon} />
     </mesh>
   )
