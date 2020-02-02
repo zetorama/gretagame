@@ -22,7 +22,7 @@ export const RenewableEnergy = 'renewable-energy'
 export const DisasterTypes = [DeadlyCow, GasCar, Garbage, ForestFire, OceanPollution, FossilFuel]
 
 export const markerTemplates = {
-    DeadlyCow: {
+    [DeadlyCow]: {
         minProduceCO: 0,
         maxProduceCO: 100,
         minProducePO: 0,
@@ -31,7 +31,7 @@ export const markerTemplates = {
         maxRequirePO: 100,
         nextTypes: [BeyondMeat]
     },
-    BeyondMeat: {
+    [BeyondMeat]: {
         minProduceCO: 0,
         maxProduceCO: 100,
         minProducePO: 0,
@@ -39,7 +39,7 @@ export const markerTemplates = {
         minRequirePO: 0,
         maxRequirePO: 100,
     },
-    GasCar: {
+    [GasCar]: {
         minProduceCO: 0,
         maxProduceCO: 100,
         minProducePO: 0,
@@ -48,7 +48,7 @@ export const markerTemplates = {
         maxRequirePO: 100,
         nextTypes: [ElectricCar]
     },
-    ElectricCar: {
+    [ElectricCar]: {
         minProduceCO: 0,
         maxProduceCO: 100,
         minProducePO: 0,
@@ -56,7 +56,7 @@ export const markerTemplates = {
         minRequirePO: 0,
         maxRequirePO: 100,
     },
-    Garbage: {
+    [Garbage]: {
         minProduceCO: 0,
         maxProduceCO: 100,
         minProducePO: 0,
@@ -65,7 +65,7 @@ export const markerTemplates = {
         maxRequirePO: 100,
         nextTypes: [Recycle]
     },
-    Recycle: {
+    [Recycle]: {
         minProduceCO: 0,
         maxProduceCO: 100,
         minProducePO: 0,
@@ -73,7 +73,7 @@ export const markerTemplates = {
         minRequirePO: 0,
         maxRequirePO: 100,
     },
-    ForestFire: {
+    [ForestFire]: {
         minProduceCO: 0,
         maxProduceCO: 100,
         minProducePO: 0,
@@ -82,7 +82,7 @@ export const markerTemplates = {
         maxRequirePO: 100,
         nextTypes: [PlantForest]
     },
-    PlantForest: {
+    [PlantForest]: {
         minProduceCO: 0,
         maxProduceCO: 100,
         minProducePO: 0,
@@ -90,7 +90,7 @@ export const markerTemplates = {
         minRequirePO: 0,
         maxRequirePO: 100,
     },
-    OceanPollution: {
+    [OceanPollution]: {
         minProduceCO: 0,
         maxProduceCO: 100,
         minProducePO: 0,
@@ -99,7 +99,7 @@ export const markerTemplates = {
         maxRequirePO: 100,
         nextTypes: [Algae]
     },
-    Algae: {
+    [Algae]: {
         minProduceCO: 0,
         maxProduceCO: 100,
         minProducePO: 0,
@@ -107,7 +107,7 @@ export const markerTemplates = {
         minRequirePO: 0,
         maxRequirePO: 100,
     },
-    FossilFuel: {
+    [FossilFuel]: {
         minProduceCO: 0,
         maxProduceCO: 100,
         minProducePO: 0,
@@ -116,7 +116,7 @@ export const markerTemplates = {
         maxRequirePO: 100,
         nextTypes: [RenewableEnergy]
     },
-    RenewableEnergy: {
+    [RenewableEnergy]: {
         minProduceCO: 0,
         maxProduceCO: 100,
         minProducePO: 0,
