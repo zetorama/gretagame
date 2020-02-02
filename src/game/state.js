@@ -1,4 +1,4 @@
-import React, { useReducer, useContext, createContext } from 'react'
+import { useContext, createContext } from 'react'
 import { generateSpots } from './helpers'
 
 export const GameContext = createContext([{}])

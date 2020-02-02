@@ -1,4 +1,4 @@
-import React, {useRef, useMemo, useState, useCallback} from 'react'
+import React, {useRef, useMemo} from 'react'
 import { useFrame,  useLoader } from 'react-three-fiber'
 import * as THREE from 'three'
 import {useGameState} from './state'
