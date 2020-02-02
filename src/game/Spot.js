@@ -13,7 +13,9 @@ function Spot({ spot, opacity = 1, scale = 0.5, ...props }) {
   // const { factor } = useSpring({ factor: hovered ? 1.1 : 1 })
   const toggleHover = useCallback(() => setHover(val => !val))
   const ref = useRef()
-  
+  useFrame(() => {
+    ref.current.lookAt(0, 0, 0)
+  })
   const size = scale * (hovered ? 2 : 1)
   return (
     <mesh ref={ref}
@@ -25,7 +27,7 @@ function Spot({ spot, opacity = 1, scale = 0.5, ...props }) {
       scale={[size, size, 1]}
     >
       <planeBufferGeometry attach="geometry" args={[.5, .5]} />
-      <meshStandardMaterial attach="material" transparent opacity={opacity} map={texture} />
+      <meshStandardMaterial attach="material" transparent opacity={opacity} map={texture} side={THREE.DoubleSide} />
     </mesh>
   )
 }
