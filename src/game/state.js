@@ -1,6 +1,7 @@
 import React, { useReducer, useContext, createContext } from 'react'
+import { generateSpots } from './helpers'
 
-export const GameContext = createContext(null)
+export const GameContext = createContext([{}])
 
 export const useGameState = () => useContext(GameContext)
 
@@ -21,29 +22,31 @@ export const getInitialGameState = () => ({
   currentPO: 0,
   maxCO: 100,
   maxTurn: 20,
-  currentMarkerKey: null,
-  markerMap: {}
+  currentSpotKey: null,
+  spotMap: {}
 })
 
 export const getInitialMarker = () => ({
   type: '',
   produceCO: 0,
   producePO: 0,
-  requirePO: 0
+  requirePO: 0,
 })
 
 export const gameReducer = (state, action) => {
+  console.log('Reducer -----------')
   switch (action.type) {
-    case 'game:start': 
+    case 'game:start':
+      console.log(generateSpots(3))
       return {
         ...getInitialGameState(),
         currentTurn: 1,
-        markerMap: generateInitialMarkers()
+        spotMap: generateSpots(3)
       }
     case 'turn:next':
       const nextTurn = state.currentTurn + 1
-      const nextCO = calcNextCO(state.markerMap, state.currentCO)
-      const nextPO = calcNextPO(state.markerMap, state.currentPO)
+      const nextCO = calcNextCO(state.spotMap, state.currentCO)
+      const nextPO = calcNextPO(state.spotMap, state.currentPO)
       const nextGameResult = calcNextGameResult(state, nextCO)
       return {
         ...state,
@@ -57,12 +60,18 @@ export const gameReducer = (state, action) => {
 }
 
 //Game logic
-const calcNextCO = (markerMap, currentCO) => {
-  return Object.values(markerMap).reduce((acc, marker) => acc + marker.produceCO, currentCO)
+const calcNextCO = (spotMap, currentCO) => {
+  return Object.values(spotMap)
+      .filter(spot => spot.marker)
+      .map(spot => spot.marker)
+      .reduce((acc, marker) => acc + marker.produceCO, currentCO)
 }
 
-const calcNextPO = (markerMap, currentPO) => {
-  return Object.values(markerMap).reduce((acc, marker) => acc + marker.producePO, currentPO)
+const calcNextPO = (spotMap, currentPO) => {
+  return Object.values(spotMap)
+      .filter(spot => spot.marker)
+      .map(spot => spot.marker)
+      .reduce((acc, marker) => acc + marker.producePO, currentPO)
 }
 
 const calcNextGameResult = (state, nextCO, nextTurn) => {
@@ -75,8 +84,4 @@ const calcNextGameResult = (state, nextCO, nextTurn) => {
   }
 
   return state.gameResult
-}
-
-const generateInitialMarkers = (amount = 10) => {
-
 }

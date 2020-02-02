@@ -4,7 +4,7 @@ import { Canvas, extend } from 'react-three-fiber'
 import { GameStateProvider } from './game/state'
 import Ui from './game/Ui'
 import GameWorld from './game/GameWorld'
-import Controls from "./game/Controls";
+import Controls from './game/Controls'
 
 function Game() {
   return (

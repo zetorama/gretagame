@@ -1,9 +1,12 @@
-import React, { useRef, useMemo } from 'react'
+import React, {useRef, useMemo, useEffect} from 'react'
 import { useFrame,  useLoader } from 'react-three-fiber'
 import * as THREE from 'three'
+import {useGameState} from './state'
 
 function GameWorld() {
   const ref = useRef()
+    const a = useGameState()
+    console.log(a)
   // useFrame(
   //   ({ clock }) =>
   //     (ref.current.rotation.x = ref.current.rotation.y = ref.current.rotation.z =
