@@ -10,6 +10,7 @@ function GameWorld() {
   const [state] = useGameState()
 
   console.log('%c RENDER GameWorld', 'color:orange', state)
+  console.log('%c RENDER GameWorld ------', 'color:orange', Object.values(state.spotMap))
 
   // useFrame(
   //   ({ clock }) =>
@@ -36,13 +37,7 @@ function GameWorld() {
       /> */}
 
       <Atmosphere />
-      <Spot
-        url='/assets/fire.png'
-        scale={.5}
-        position={[0,0, 2.2]}
-        // rotation={[]}
-      />
-
+      {Object.values(state.spotMap).map(spot => <Spot key={spot.key} spot={spot} />)}
       <Earth />
       <Moon />
     </group>
