@@ -15,11 +15,11 @@ export const getRndItems = (sourceArr, amount = 10) => {
 
     const indSet = new Set()
     do {
-        const rndInd = getRndInRange(0, sourceArr.length)
+        const rndInd = getRndInRange(0, sourceArr.length - 1)
         if (!indSet.has(rndInd)) {
             indSet.add(rndInd)
         }
     } while (indSet.size !== amount)
 
-    return indSet.values().map(ind => sourceArr[ind])
+    return Array.from(indSet.values()).map(ind => sourceArr[ind])
 }
