@@ -7,7 +7,7 @@ function Planet() {
   useFrame(
     ({ clock }) =>
       (ref.current.rotation.x = ref.current.rotation.y = ref.current.rotation.z =
-        Math.cos(clock.getElapsedTime() / 8) * Math.PI)
+        Math.cos(clock.getElapsedTime() / 8) * Math.PI / 10)
   )
   return (
     <group ref={ref}>
