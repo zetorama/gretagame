@@ -8,7 +8,7 @@ export function Ui({ children }) {
 
   const isStarted = currentTurn > 0
   const currentYear = currentTurn + 2019
-  const currentPos = currentCO / maxCO
+  const currentPos = Math.min(currentCO, maxCO) / maxCO
   const goalPos = goalCO / maxCO
 
   const handleStart = useCallback(() => dispatch({ type: 'game:start' }))
