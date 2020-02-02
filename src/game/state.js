@@ -20,6 +20,7 @@ export const getInitialGameState = () => ({
   currentCO: 0,
   currentPO: 0,
   maxCO: 100,
+  maxTurn: 20,
   currentMarkerKey: null,
   markerMap: {}
 })
@@ -35,17 +36,21 @@ export const gameReducer = (state, action) => {
   switch (action.type) {
     case 'game:start': 
       return {
-        gameResult: null,
-        currentTurn: 1, 
+        ...getInitialGameState(),
+        currentTurn: 1,
+        markerMap: generateInitialMarkers()
       }
     case 'turn:next':
+      const nextTurn = state.currentTurn + 1
       const nextCO = calcNextCO(state.markerMap, state.currentCO)
+      const nextPO = calcNextPO(state.markerMap, state.currentPO)
+      const nextGameResult = calcNextGameResult(state, nextCO)
       return {
         ...state,
-        gameResult: nextCO > state.maxCO ? 'boiled' : state.gameResult,
+        gameResult: nextGameResult,
         currentCO: nextCO,
-        currentPO: calcNextPO(state.markerMap, state.currentPO),
-        currentTurn: state.currentTurn + 1, 
+        currentPO: nextPO,
+        currentTurn: nextTurn,
       }
     default: throw new Error()
   }
@@ -58,4 +63,20 @@ const calcNextCO = (markerMap, currentCO) => {
 
 const calcNextPO = (markerMap, currentPO) => {
   return Object.values(markerMap).reduce((acc, marker) => acc + marker.producePO, currentPO)
+}
+
+const calcNextGameResult = (state, nextCO, nextTurn) => {
+  if (state.gameResult === null) {
+    if (nextCO > state.maxCO) {
+      return 'boiled'
+    } else if (nextTurn > state.maxTurn) {
+      return 'you did it'
+    }
+  }
+
+  return state.gameResult
+}
+
+const generateInitialMarkers = (amount = 10) => {
+
 }
