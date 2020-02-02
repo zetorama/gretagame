@@ -2,14 +2,15 @@ import React, { useRef, useMemo } from 'react'
 import { useFrame,  useLoader } from 'react-three-fiber'
 import * as THREE from 'three'
 
-function Planet() {
+function GameWorld() {
   const ref = useRef()
-  useFrame(
-    ({ clock }) =>
-      (ref.current.rotation.x = ref.current.rotation.y = ref.current.rotation.z =
-        Math.cos(clock.getElapsedTime() / 8) * Math.PI / 10)
-  )
+  // useFrame(
+  //   ({ clock }) =>
+  //     (ref.current.rotation.x = ref.current.rotation.y = ref.current.rotation.z =
+  //       Math.cos(clock.getElapsedTime() / 8) * Math.PI / 10)
+  // )
   return (
+
     <group ref={ref}>
       <Stars />
       {/* <rectAreaLight
@@ -86,4 +87,4 @@ function Stars({ count = 5000 }) {
   )
 }
 
-export default Planet
+export default GameWorld
