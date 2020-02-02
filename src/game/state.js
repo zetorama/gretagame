@@ -28,11 +28,10 @@ export const gameReducer = (state, action) => {
 
   switch (action.type) {
     case 'game:start':
-      console.log(generateSpots(3))
       return {
         ...getInitialGameState(),
         currentTurn: 1,
-        spotMap: generateSpots(3)
+        spotMap: generateSpots(10)
       }
     case 'turn:next':
       const nextTurn = state.currentTurn + 1

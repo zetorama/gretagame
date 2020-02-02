@@ -4,11 +4,16 @@ import { useGameState } from './state'
 import './Ui.css'
 
 export function Ui({ children }) {
-  const [{ currentTurn }] = useGameState()
+  const [{ currentTurn }, dispatch] = useGameState()
 
   return (
     <div className="Ui">
-      <header className="Ui-header">TURN: {currentTurn}</header>
+      <header className="Ui-header">
+          TURN: {currentTurn}
+          <button onClick={() => { dispatch({
+              type: 'game:start'
+          }) }}>Start</button>
+      </header>
       <div className="Ui-canvas">
         {children}
       </div>
