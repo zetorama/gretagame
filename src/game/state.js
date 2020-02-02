@@ -5,16 +5,6 @@ export const GameContext = createContext([{}])
 
 export const useGameState = () => useContext(GameContext)
 
-export const GameStateProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(gameReducer, getInitialGameState())
-
-  return (
-    <GameContext.Provider value={[state, dispatch]}>
-      {children}
-    </GameContext.Provider>
-  )
-}
-
 export const getInitialGameState = () => ({
   gameResult: null,
   currentTurn: 0,
@@ -34,7 +24,8 @@ export const getInitialMarker = () => ({
 })
 
 export const gameReducer = (state, action) => {
-  console.log('Reducer -----------')
+  console.log('%c ACTION: gameReducer', 'color:crimson', action, state)
+
   switch (action.type) {
     case 'game:start':
       console.log(generateSpots(3))

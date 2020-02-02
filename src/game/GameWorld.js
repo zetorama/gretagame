@@ -5,8 +5,10 @@ import {useGameState} from './state'
 
 function GameWorld() {
   const ref = useRef()
-    const a = useGameState()
-    console.log(a)
+  const [state] = useGameState()
+
+  console.log('%c RENDER GameWorld', 'color:orange', state)
+
   // useFrame(
   //   ({ clock }) =>
   //     (ref.current.rotation.x = ref.current.rotation.y = ref.current.rotation.z =
