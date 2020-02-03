@@ -2,10 +2,16 @@ import * as THREE from 'three'
 import React, {useState, useCallback, useRef} from 'react'
 import {useFrame, useLoader} from 'react-three-fiber'
 import { useSpring, a } from 'react-spring/three'
+
+import { useGameState } from './state'
 import {markerTemplates} from './helpers'
 
 function Spot({ dispatch, spot, opacity = 1, scale = 0.5, ...props }) {
+  const [{ currentPO }] = useGameState()
+
   const marker = spot.marker
+  console.log(marker)
+
   const [texture] = useLoader(THREE.TextureLoader, [markerTemplates[marker.type].iconUrl])
   const [hovered, setHover] = useState(false)
   const hover = useCallback(() => setHover(true), [])
@@ -24,24 +30,28 @@ function Spot({ dispatch, spot, opacity = 1, scale = 0.5, ...props }) {
   const ref = useRef()
   useFrame(() => {
     ref.current.lookAt(0, 0, 0)
+
+    const isEnabled = marker.requirePO >= currentPO
+    ref.current.opacity = isEnabled ? 1 : .3
   })
 
   return (
-      <group>
-        <a.mesh
-          ref={ref}
-          {...props}
-          position={spot.position}
-          onPointerOver={hover}
-          onPointerOut={unhover}
-          onPointerDown={actionStart}
-          onPointerUp={actionEnd}
-          scale={factor.interpolate(f => [scale * f, scale * f, 1])}
-        >
-          <planeBufferGeometry attach="geometry" args={[.5, .5]} />
-          <meshStandardMaterial attach="material" transparent opacity={opacity} map={texture} side={THREE.DoubleSide} />
-        </a.mesh>
-      </group>
+    <group ref={ref}
+      position={spot.position}>
+      <a.mesh
+        {...props}
+        onPointerOver={hover}
+        onPointerOut={unhover}
+        onPointerDown={actionStart}
+        onPointerUp={actionEnd}
+        scale={factor.interpolate(f => [scale * f, scale * f, 1])}
+        // flip hozintally, as we facing towards planet center
+        rotation={[0, -Math.PI, 0]} 
+      >
+        <planeBufferGeometry attach="geometry" args={[.5, .5]} />
+        <meshStandardMaterial attach="material" transparent color='red' opacity={opacity} map={texture} side={THREE.DoubleSide} />
+      </a.mesh>
+    </group>
   )
 }
 

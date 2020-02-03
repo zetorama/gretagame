@@ -9,6 +9,7 @@ export const useGameState = () => useContext(GameContext)
 export const getInitialGameState = () => ({
   gameResult: null,
   currentTurn: 0,
+
   maxPO: 100,
   currentPO: 30,
 
@@ -51,7 +52,7 @@ export const gameReducer = (state, action) => {
         ...state,
         gameResult: nextGameResult,
         currentCO: nextCO,
-        currentPO: nextPO,
+        currentPO: Math.min(state.maxPO, nextPO),
         currentTurn: nextTurn,
       }
     case 'spot:action':
@@ -60,19 +61,25 @@ export const gameReducer = (state, action) => {
       }
       const { spot } = action.payload
       const { marker } = spot
-      if (marker && markerTemplates[marker.type].nextTypes && marker.requirePO < state.currentPO) {
-        const nextMarker = getMarkerByType(getRndItem(markerTemplates[marker.type].nextTypes))
+      if (marker && marker.requirePO < state.currentPO) {
+        const { nextTypes } = markerTemplates[marker.type]
+        const nextMarker = nextTypes && getMarkerByType(getRndItem(nextTypes))
+        const spotMap = { ...state.spotMap }
+        
+        if (nextMarker) {
+          spotMap[spot.key] = {
+            ...spot,
+            marker: nextMarker
+          }
+        } else {
+          delete spotMap[spot.key]
+        }
+
 
         let nextState = {
           ...state,
-          currentPO: state.currentPO - marker.requirePO,
-          spotMap: {
-            ...state.spotMap,
-            [spot.key]: {
-              ...spot,
-              marker: nextMarker
-            }
-          }
+          spotMap,
+          currentPO: Math.min(state.maxPO, state.currentPO - marker.requirePO),
         }
         return gameReducer(nextState, {type: 'turn:next'})
       }
