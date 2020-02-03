@@ -12,6 +12,7 @@ export const Recycle = 'recycle'
 
 export const ForestFire = 'forest-fire'
 export const PlantForest = 'plant-forest'
+export const PlantForestDone = 'plant-forest-done'
 
 export const OceanPollution = 'ocean-pollution'
 export const Algae = 'algae'
@@ -31,18 +32,19 @@ export const markerTemplates = {
         minRequirePO: 50,
         maxRequirePO: 80,
 
-        // nextTypes: [BeyondMeat],
+        nextTypes: [BeyondMeat],
         iconUrl: '/assets/cow.png',
     },
-    // [BeyondMeat]: {
-    //     minProduceCO: 0,
-    //     maxProduceCO: 100,
-    //     minProducePO: 0,
-    //     maxProducePO: 100,
-    //     minRequirePO: 50,
-    //     maxRequirePO: 80,
-    //     iconUrl: '/assets/fire.png',
-    // },
+    [BeyondMeat]: {
+        minProduceCO: 0,
+        maxProduceCO: 0,
+        minProducePO: 1,
+        maxProducePO: 2,
+        // minRequirePO: 50,
+        // maxRequirePO: 80,
+        iconUrl: '/assets/wheat.png',
+    },
+
     [GasCar]: {
         minProduceCO: 5,
         maxProduceCO: 10,
@@ -51,37 +53,19 @@ export const markerTemplates = {
 
         minRequirePO: 5,
         maxRequirePO: 25,
-        // nextTypes: [ElectricCar],
+        nextTypes: [ElectricCar],
         iconUrl: '/assets/gascar.png',
     },
-    // [ElectricCar]: {
-    //     minProduceCO: 0,
-    //     maxProduceCO: 100,
-    //     minProducePO: 0,
-    //     maxProducePO: 100,
-    //     minRequirePO: 50,
-    //     maxRequirePO: 80,
-    //     iconUrl: '/assets/fire.png',
-    // },
-    // [Garbage]: {
-    //     minProduceCO: 0,
-    //     maxProduceCO: 100,
-    //     minProducePO: 0,
-    //     maxProducePO: 100,
-    //     minRequirePO: 50,
-    //     maxRequirePO: 80,
-    //     nextTypes: [Recycle],
-    //     iconUrl: '/assets/fire.png',
-    // },
-    // [Recycle]: {
-    //     minProduceCO: 0,
-    //     maxProduceCO: 100,
-    //     minProducePO: 0,
-    //     maxProducePO: 100,
-    //     minRequirePO: 50,
-    //     maxRequirePO: 80,
-    //     iconUrl: '/assets/fire.png',
-    // },
+    [ElectricCar]: {
+        minProduceCO: 0,
+        maxProduceCO: 0,
+        minProducePO: 1,
+        maxProducePO: 2,
+        // minRequirePO: 50,
+        // maxRequirePO: 80,
+        iconUrl: '/assets/electrocar.png',
+    },
+
     [ForestFire]: {
         minProduceCO: 3,
         maxProduceCO: 15,
@@ -89,37 +73,29 @@ export const markerTemplates = {
         maxProducePO: 10,
         minRequirePO: 20,
         maxRequirePO: 60,
-        // nextTypes: [PlantForest],
+        nextTypes: [PlantForest],
         iconUrl: '/assets/fire.png',
     },
-    // [PlantForest]: {
-    //     minProduceCO: 0,
-    //     maxProduceCO: 100,
-    //     minProducePO: 0,
-    //     maxProducePO: 100,
-    //     minRequirePO: 50,
-    //     maxRequirePO: 80,
-    //     iconUrl: '/assets/fire.png',
-    // },
-    // [OceanPollution]: {
-    //     minProduceCO: 0,
-    //     maxProduceCO: 100,
-    //     minProducePO: 0,
-    //     maxProducePO: 100,
-    //     minRequirePO: 50,
-    //     maxRequirePO: 80,
-    //     nextTypes: [Algae],
-    //     iconUrl: '/assets/fire.png',
-    // },
-    // [Algae]: {
-    //     minProduceCO: 0,
-    //     maxProduceCO: 100,
-    //     minProducePO: 0,
-    //     maxProducePO: 100,
-    //     minRequirePO: 50,
-    //     maxRequirePO: 80,
-    //     iconUrl: '/assets/fire.png',
-    // },
+    [PlantForest]: {
+        minProduceCO: 0,
+        maxProduceCO: 0,
+        minProducePO: 2,
+        maxProducePO: 5,
+        minRequirePO: 20,
+        maxRequirePO: 60,
+        nextTypes: [PlantForestDone],
+        iconUrl: '/assets/trees.png',
+    },
+    [PlantForestDone]: {
+        minProduceCO: 0,
+        maxProduceCO: 0,
+        minProducePO: 2,
+        maxProducePO: 5,
+        // minRequirePO: 50,
+        // maxRequirePO: 80,
+        iconUrl: '/assets/trees_ok.png',
+    },
+
     [FossilFuel]: {
         minProduceCO: 5,
         maxProduceCO: 25,
@@ -127,29 +103,27 @@ export const markerTemplates = {
         maxProducePO: 5,
         minRequirePO: 50,
         maxRequirePO: 80,
-        // nextTypes: [RenewableEnergy],
+        nextTypes: [RenewableEnergy],
         iconUrl: '/assets/plant.png',
     },
-    [Garbage]: {
-        minProduceCO: 5,
-        maxProduceCO: 25,
-        minProducePO: 1,
-        maxProducePO: 5,
-        minRequirePO: 50,
-        maxRequirePO: 80,
-        // nextTypes: [RenewableEnergy],
-        iconUrl: '/assets/plant.png',
+    [RenewableEnergy]: {
+        minProduceCO: 0,
+        maxProduceCO: 0,
+        minProducePO: 0,
+        maxProducePO: 0,
+        // minRequirePO: 50,
+        // maxRequirePO: 80,
+        iconUrl: '/assets/windmill.png',
     },
-    // [RenewableEnergy]: {
-    //     minProduceCO: 0,
-    //     maxProduceCO: 100,
-    //     minProducePO: 0,
-    //     maxProducePO: 100,
-    //     minRequirePO: 50,
-    //     maxRequirePO: 80,
-    //     iconUrl: '/assets/fire.png',
-    // },
+
+    // [Garbage]: {},
+    // [Recycle]: {},
+    // [OceanPollution]: {},
+    // [Algae]: {},
 }
+
+// temp copy-paste
+markerTemplates[Garbage] = markerTemplates[FossilFuel]
 
 let keyId = 0
 export const spotTemplates = [
@@ -173,7 +147,7 @@ export const spotTemplates = [
     {
 
         key: `spot-${++keyId}`,
-        lonLatPos: [44.179038, -101.906365], // south dakota
+        lonLatPos: [34.179038, -91.906365], // south dakota
         initialMarkerTypes: [DeadlyCow]
     },
     {
@@ -221,19 +195,19 @@ export const spotTemplates = [
     {
 
         key: `spot-${++keyId}`,
-        lonLatPos: [51.566778, -0.061913], // uk
+        lonLatPos: [48.276987, -0.061913], // france
         initialMarkerTypes: [GasCar]
     },
     {
 
         key: `spot-${++keyId}`,
-        lonLatPos: [41.245442, -1.124363], // spain
+        lonLatPos: [35.245442, -1.124363], // spain
         initialMarkerTypes: [Garbage]
     },
     {
 
         key: `spot-${++keyId}`,
-        lonLatPos: [52.523113, 13.419685], // germany
+        lonLatPos: [25.276987, 55.296249], // dubai
         initialMarkerTypes: [GasCar]
     },
     {
@@ -287,7 +261,7 @@ export const spotTemplates = [
     {
 
         key: `spot-${++keyId}`,
-        lonLatPos: [28.240068, 76.551543], // india
+        lonLatPos: [21.240068, 76.551543], // india
         initialMarkerTypes: [GasCar]
     },
     {
@@ -349,7 +323,7 @@ export const getMarkerByType = (type = ForestFire) => {
         type,
         produceCO: getRndInRange(template.minProduceCO, template.maxProduceCO),
         producePO: getRndInRange(template.minProducePO, template.maxProducePO),
-        requirePO: getRndInRange(template.minRequirePO, template.maxRequirePO),
+        requirePO: template.minRequirePO ? getRndInRange(template.minRequirePO, template.maxRequirePO) : 0,
     }
 }
 

@@ -6,11 +6,10 @@ import { useSpring, a } from 'react-spring/three'
 import { useGameState } from './state'
 import {markerTemplates} from './helpers'
 
-function Spot({ dispatch, spot, opacity = 1, scale = 0.5, ...props }) {
+function Spot({ dispatch, spot, opacity = 1, scale = 1, ...props }) {
   const [{ currentPO }] = useGameState()
 
   const marker = spot.marker
-  console.log(marker)
 
   const [texture] = useLoader(THREE.TextureLoader, [markerTemplates[marker.type].iconUrl])
   const [hovered, setHover] = useState(false)
@@ -22,7 +21,7 @@ function Spot({ dispatch, spot, opacity = 1, scale = 0.5, ...props }) {
   const actionEnd = useCallback(() => dispatch({
     type: 'spot:action',
     payload: {
-      spot
+      spotKey: spot.key,
     }
   }), [])
   const { factor } = useSpring({ factor: hovered ? 1.5 : 1 })
@@ -48,8 +47,8 @@ function Spot({ dispatch, spot, opacity = 1, scale = 0.5, ...props }) {
         // flip hozintally, as we facing towards planet center
         rotation={[0, -Math.PI, 0]} 
       >
-        <planeBufferGeometry attach="geometry" args={[.5, .5]} />
-        <meshStandardMaterial attach="material" transparent color='red' opacity={opacity} map={texture} side={THREE.DoubleSide} />
+        <planeBufferGeometry attach="geometry" args={[.33, .33]} />
+        <meshStandardMaterial attach="material" transparent opacity={opacity} map={texture} side={THREE.DoubleSide} />
       </a.mesh>
     </group>
   )

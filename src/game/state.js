@@ -2,7 +2,7 @@ import { useContext, createContext } from 'react'
 import {generateSpots, getMarkerByType, markerTemplates} from './helpers'
 import {getRndItem} from "./utils";
 
-export const SPOTS_INITIAL_N = 20
+export const SPOTS_INITIAL_N = 200
 
 export const GameContext = createContext([{}])
 
@@ -17,7 +17,7 @@ export const getInitialGameState = () => ({
 
   currentCO: 666,
   maxCO: 1000,
-  goalCO: 250,
+  goalCO: 220,
   reduceCO: 200,
 
   maxTurn: 20,
@@ -53,6 +53,8 @@ export const gameReducer = (state, action) => {
       return {
         ...state,
         gameResult: nextGameResult,
+        // planet reduces less and less
+        reduceCO: Math.max(0, state.reduceCO - 10),
         currentCO: Math.max(0, Math.min(state.maxCO, nextCO)),
         currentPO: Math.max(0, Math.min(state.maxPO, nextPO)),
         currentTurn: nextTurn,
@@ -61,9 +63,14 @@ export const gameReducer = (state, action) => {
       if (state.gameResult) {
         return state
       }
-      const { spot } = action.payload
+      const spot = state.spotMap[action.payload.spotKey]
       const { marker } = spot
-      if (marker && marker.requirePO < state.currentPO) {
+      if (!marker) throw new Error('WAT? No marker in spot, eh?')
+      if (!marker.requirePO) {
+        return state
+      }
+
+      if (marker.requirePO < state.currentPO) {
         const { nextTypes } = markerTemplates[marker.type]
         const nextMarker = nextTypes && getMarkerByType(getRndItem(nextTypes))
         const spotMap = { ...state.spotMap }
