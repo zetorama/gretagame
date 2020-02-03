@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import React, {useState, useCallback, useRef} from 'react'
-import {useFrame, useLoader} from 'react-three-fiber'
+import {useFrame, useLoader, useUpdate} from 'react-three-fiber'
 import { useSpring, a } from 'react-spring/three'
 
 import { useGameState } from './state'
@@ -10,33 +10,45 @@ function Spot({ dispatch, spot, opacity = 1, scale = 0.5, ...props }) {
   const [{ currentPO }] = useGameState()
 
   const marker = spot.marker
-  console.log(marker)
-
   const [texture] = useLoader(THREE.TextureLoader, [markerTemplates[marker.type].iconUrl])
   const [hovered, setHover] = useState(false)
+  const actionRef = useRef(null)
   const hover = useCallback(() => setHover(true), [])
-  const unhover = useCallback(() => setHover(false), [])
-  const actionStart = useCallback(() => {
-
+  const unhover = useCallback(() => {
+    setHover(false)
+    actionRef.current = null
   }, [])
-  const actionEnd = useCallback(() => dispatch({
-    type: 'spot:action',
-    payload: {
-      spot
+  const actionStart = useCallback(() => {
+    actionRef.current = Date.now()
+  }, [])
+  const actionEnd = useCallback(() => {
+    if (actionRef.current && ((Date.now() - actionRef.current) >= 600)) {
+      dispatch({
+        type: 'spot:action',
+        payload: {
+          spot
+        }
+      })
     }
-  }), [])
+    actionRef.current = null
+  }, [])
   const { factor } = useSpring({ factor: hovered ? 1.5 : 1 })
-
-  const ref = useRef()
+  const isInitedRef = useRef(false)
+  const groupRef = useUpdate(() => {
+    groupRef.current.lookAt(0, 0, 0)
+  }, [])
   useFrame(() => {
-    ref.current.lookAt(0, 0, 0)
+    if (!isInitedRef.current) {
+      groupRef.current.lookAt(0, 0, 0)
+      isInitedRef.current = true
+    }
 
     const isEnabled = marker.requirePO >= currentPO
-    ref.current.opacity = isEnabled ? 1 : .3
+    groupRef.current.opacity = isEnabled ? 1 : .3
   })
 
   return (
-    <group ref={ref}
+    <group ref={groupRef}
       position={spot.position}>
       <a.mesh
         {...props}
