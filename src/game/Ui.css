@@ -82,6 +82,14 @@
   background-image: url(/assets/thermometer.png);
   background-size: 100% 100%;
 }
+
+.Ui-thermo-inner {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 0;
+  bottom: 0;
+}
 .Ui-thermo-meter {
   position: absolute;
   left: 0;
@@ -176,4 +184,18 @@
   justify-content: center;
   
   color: red;
+}
+
+.Ui-canvas-effect {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  opacity: var(--opacity, .5);
+
+  background-color: red;
+
 }

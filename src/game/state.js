@@ -2,6 +2,8 @@ import { useContext, createContext } from 'react'
 import {generateSpots, getMarkerByType, markerTemplates} from './helpers'
 import {getRndItem} from "./utils";
 
+export const SPOTS_INITIAL_N = 20
+
 export const GameContext = createContext([{}])
 
 export const useGameState = () => useContext(GameContext)
@@ -15,8 +17,8 @@ export const getInitialGameState = () => ({
 
   currentCO: 666,
   maxCO: 1000,
-  goalCO: 150,
-  reduceCO: 50,
+  goalCO: 250,
+  reduceCO: 200,
 
   maxTurn: 20,
   currentSpotKey: null,
@@ -38,21 +40,21 @@ export const gameReducer = (state, action) => {
       return {
         ...getInitialGameState(),
         currentTurn: 1,
-        spotMap: generateSpots(100)
+        spotMap: generateSpots(SPOTS_INITIAL_N),
       }
     case 'turn:next':
       if (state.gameResult) {
         return state
       }
       const nextTurn = state.currentTurn + 1
-      const nextCO = calcNextCO(state.spotMap, state.currentCO)
+      const nextCO = calcNextCO(state.spotMap, state.currentCO) - state.reduceCO
       const nextPO = calcNextPO(state.spotMap, state.currentPO)
       const nextGameResult = calcNextGameResult(state, nextCO)
       return {
         ...state,
         gameResult: nextGameResult,
-        currentCO: nextCO,
-        currentPO: Math.min(state.maxPO, nextPO),
+        currentCO: Math.max(0, Math.min(state.maxCO, nextCO)),
+        currentPO: Math.max(0, Math.min(state.maxPO, nextPO)),
         currentTurn: nextTurn,
       }
     case 'spot:action':
