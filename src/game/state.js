@@ -12,10 +12,10 @@ export const getInitialGameState = () => ({
   maxPO: 100,
   currentPO: 30,
 
-  currentCO: 600,
+  currentCO: 666,
   maxCO: 1000,
-  goalCO: 25,
-  reduceCO: 5,
+  goalCO: 150,
+  reduceCO: 50,
 
   maxTurn: 20,
   currentSpotKey: null,
