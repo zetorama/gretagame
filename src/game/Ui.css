@@ -1,4 +1,5 @@
 .Ui {
+  cursor: default;
   position: relative;
   width: 100%;
   height: 100%;
@@ -9,12 +10,10 @@
   justify-content: stretch;
 }
 
-.Ui-canvas {
-  z-index: 1;
-  position: relative;
-  flex: 1;
-
-  background-image: radial-gradient(at 50% 70%, #200f20 40%, #090b1f 80%, #050523 100%);
+@media (min-width: 450px) {
+  .Ui {
+    font-size: .666em;
+  }
 }
 
 .Ui-header,
@@ -30,7 +29,6 @@
 
   padding: .5em;
   text-align: center;
-  font-size: .5em;
 }
 
 .Ui-footer {
@@ -180,6 +178,26 @@
   color: red;
 }
 
+.Ui-canvas {
+  z-index: 1;
+  position: relative;
+
+  max-height: 100vh;
+  flex: 1;
+
+  background-image: radial-gradient(at 50% 70%, #200f20 40%, #090b1f 80%, #050523 100%);
+}
+.Ui-canvas-inner {
+  height: 720px;
+  position: relative;
+}
+
+@media (max-height: 450px) {
+.Ui-canvas-inner {
+  height: 500px;
+}
+}
+
 .Ui-canvas-effect {
   pointer-events: none;
   position: absolute;
@@ -209,10 +227,11 @@
 .Ui-canvas-spinner::before {
   content: '';
   display: block;
+  flex: none;
   width: 400px;
   height: 400px;
 
-  border-radius: 50%;
+  border-radius: 200px;
   background-image: radial-gradient(circle at center, rgba(33, 222, 33, .666), rgba(255,255,255,0) 90%);
 
   transform: scale(0);

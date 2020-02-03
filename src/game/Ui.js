@@ -45,12 +45,16 @@ export function Ui({ children }) {
       </header>
 
       <div className="Ui-canvas">
-        {children}
-        <div className="Ui-canvas-effect" style={{ '--opacity': effectOpacity }} />
+        <div className="Ui-canvas-inner">
+          {children}
 
-        {spinner && (
-          <div className="Ui-canvas-spinner" style={{ '--duration': spinner.duration }} />
-        )}
+          {spinner && (
+            <div className="Ui-canvas-spinner" style={{ '--duration': spinner.duration }} />
+          )}
+
+
+          <div className="Ui-canvas-effect" style={{ '--opacity': effectOpacity }} />
+        </div>
       </div>
       
       <footer className="Ui-footer">
