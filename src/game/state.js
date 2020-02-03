@@ -37,6 +37,13 @@ export const gameReducer = (state, action) => {
   console.log('%c ACTION: gameReducer', 'color:crimson', action, state)
 
   switch (action.type) {
+    case 'game:start':
+      return {
+        ...getInitialGameState(),
+        currentTurn: 1,
+        spotMap: generateSpots(SPOTS_INITIAL_N),
+      }
+
     case 'spinner:start':
       const { duration } = action.payload || {}
       return {
@@ -47,13 +54,6 @@ export const gameReducer = (state, action) => {
     case 'spinner:stop':
       return { ...state, spinner: null, }
 
-    case 'game:start':
-      return {
-        ...getInitialGameState(),
-        currentTurn: 1,
-        spotMap: generateSpots(SPOTS_INITIAL_N),
-      }
-
     case 'turn:next':
       if (state.gameResult) {
         return state
@@ -61,7 +61,7 @@ export const gameReducer = (state, action) => {
       const nextTurn = state.currentTurn + 1
       const nextCO = calcNextCO(state.spotMap, state.currentCO) - state.reduceCO
       const nextPO = calcNextPO(state.spotMap, state.currentPO)
-      const nextGameResult = calcNextGameResult(state, nextCO)
+      const nextGameResult = calcNextGameResult(state, nextCO, nextTurn)
 
       return {
         ...state,
@@ -124,8 +124,10 @@ const calcNextGameResult = (state, nextCO, nextTurn) => {
   if (state.gameResult === null) {
     if (nextCO > state.maxCO) {
       return 'boiled'
+    } else if (nextCO <= state.goalCO) {
+      return 'saved'
     } else if (nextTurn > state.maxTurn) {
-      return 'you did it'
+      return 'timeout'
     }
   }
 

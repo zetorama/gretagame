@@ -8,6 +8,7 @@ import Controls from './game/Controls'
 
 function Game() {
   const gameContext = useReducer(gameReducer, getInitialGameState())
+  const isInteractive = !gameContext[0].gameResult
 
   return (
     <GameContext.Provider value={gameContext}>
@@ -25,15 +26,17 @@ function Game() {
             <Suspense fallback={null}>
               <GameWorld position={[0, 0, 0]} />
             </Suspense>
-            <Controls
-                enablePan={false}
-                enableZoom={false}
-                enableDamping
-                dampingFactor={0.05}
-                rotateSpeed={1}
-                minPolarAngle={Math.PI * 0.25}
-                maxPolarAngle={Math.PI * 0.75}
-            />
+            {isInteractive && (
+              <Controls
+                  enablePan={false}
+                  enableZoom={false}
+                  enableDamping
+                  dampingFactor={0.05}
+                  rotateSpeed={1}
+                  minPolarAngle={Math.PI * 0.25}
+                  maxPolarAngle={Math.PI * 0.75}
+              />
+            )}
           </GameContext.Provider>
         </Canvas>
       </Ui>

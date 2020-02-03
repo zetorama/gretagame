@@ -3,6 +3,12 @@ import React, { useCallback } from 'react'
 import { useGameState } from './state'
 import './Ui.css'
 
+const outcomeMsg = {
+  boiled: 'However, our planet is boiling anyway',
+  saved: 'You saved our planet!',
+  timeout: 'Unfortunately, that was just not enough',
+}
+
 export function Ui({ children }) {
   const [{ 
     currentTurn, 
@@ -12,8 +18,8 @@ export function Ui({ children }) {
     currentPO, 
     maxPO, 
     spinner,
+    gameResult,
   }, dispatch] = useGameState()
-  // const spinner = {}
 
   const isStarted = currentTurn > 0
   const currentYear = currentTurn + 2019
@@ -35,7 +41,7 @@ export function Ui({ children }) {
             <div className='Ui-thermo-meter Ui-thermo-meter--current' style={{ '--x': currentPos.toFixed(2) }} />
             <div className='Ui-thermo-meter Ui-thermo-meter--boil' style={{ '--x': 1 }} />
             
-            <div className='Ui-year' style={{ '--x': currentPos.toFixed(2) }} onClick={isStarted ? undefined : handleStart}>
+            <div className='Ui-year' style={{ '--x': currentPos.toFixed(2) }} onClick={handleStart}>
               <div className="Ui-year-text">
                 {isStarted ? currentYear : 'START'}
               </div>
@@ -63,6 +69,16 @@ export function Ui({ children }) {
           <div className='Ui-resource-value' style={{ '--x': resourcePos.toFixed(2) }} />
         </div>
       </footer>
+
+      {gameResult && (
+        <aside className={`Ui-modal Ui-modal--${gameResult === 'saved' ? 'ok' : 'fail'}`}>
+          <h2 className='Ui-modal-title'>
+            Great job, Greta!
+          </h2>
+          <p className='Ui-modal-content'>{outcomeMsg[gameResult]}</p>
+          <button onClick={handleStart} className='Ui-modal-action'>New Game</button>
+        </aside>
+      )}
     </div>
   )
 }
