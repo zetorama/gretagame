@@ -1,5 +1,5 @@
 import { useContext, createContext } from 'react'
-import {generateSpots, getMarkerByType} from './helpers'
+import {generateSpots, getMarkerByType, markerTemplates} from './helpers'
 import {getRndItem} from "./utils";
 
 export const GameContext = createContext([{}])
@@ -9,12 +9,14 @@ export const useGameState = () => useContext(GameContext)
 export const getInitialGameState = () => ({
   gameResult: null,
   currentTurn: 0,
-  currentCO: 66,
-  currentPO: 50,
   maxPO: 100,
-  maxCO: 100,
+  currentPO: 30,
+
+  currentCO: 600,
+  maxCO: 1000,
   goalCO: 25,
   reduceCO: 5,
+
   maxTurn: 20,
   currentSpotKey: null,
   spotMap: {}
@@ -38,6 +40,9 @@ export const gameReducer = (state, action) => {
         spotMap: generateSpots(100)
       }
     case 'turn:next':
+      if (state.gameResult) {
+        return state
+      }
       const nextTurn = state.currentTurn + 1
       const nextCO = calcNextCO(state.spotMap, state.currentCO)
       const nextPO = calcNextPO(state.spotMap, state.currentPO)
@@ -50,10 +55,14 @@ export const gameReducer = (state, action) => {
         currentTurn: nextTurn,
       }
     case 'spot:action':
+      if (state.gameResult) {
+        return state
+      }
       const { spot } = action.payload
       const { marker } = spot
-      if (marker && marker.nextTypes && marker.requirePO < state.currentPO) {
-        const nextMarker = getMarkerByType(getRndItem(marker.nextTypes))
+      if (marker && markerTemplates[marker.type].nextTypes && marker.requirePO < state.currentPO) {
+        const nextMarker = getMarkerByType(getRndItem(markerTemplates[marker.type].nextTypes))
+
         let nextState = {
           ...state,
           currentPO: state.currentPO - marker.requirePO,
