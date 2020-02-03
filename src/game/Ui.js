@@ -12,7 +12,6 @@ export function Ui({ children }) {
   const resourcePos = currentPO / maxPO
   const currentPos = currentCO / maxCO
   const goalPos = goalCO / maxCO
-  const boilPos = maxCO
   const handleStart = useCallback(() => dispatch({ type: 'game:start' }))
 
   const effectOpacity = currentPos < 0.6 ? 0 : currentPos - 0.5
@@ -25,7 +24,7 @@ export function Ui({ children }) {
             <div className='Ui-thermo-meter Ui-thermo-meter--goal' style={{ '--x': goalPos.toFixed(2) }} />
             {/* TODO: a11y for current value */}
             <div className='Ui-thermo-meter Ui-thermo-meter--current' style={{ '--x': currentPos.toFixed(2) }} />
-            <div className='Ui-thermo-meter Ui-thermo-meter--boil' style={{ '--x': boilPos.toFixed(2) }} />
+            <div className='Ui-thermo-meter Ui-thermo-meter--boil' style={{ '--x': 1 }} />
             
             <div className='Ui-year' style={{ '--x': currentPos.toFixed(2) }} onClick={isStarted ? undefined : handleStart}>
               <div className="Ui-year-text">

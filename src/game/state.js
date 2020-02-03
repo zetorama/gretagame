@@ -2,7 +2,7 @@ import { useContext, createContext } from 'react'
 import {generateSpots, getMarkerByType, markerTemplates} from './helpers'
 import {getRndItem} from "./utils";
 
-export const SPOTS_INITIAL_N = 200
+export const SPOTS_INITIAL_N = 20
 
 export const GameContext = createContext([{}])
 
@@ -13,9 +13,9 @@ export const getInitialGameState = () => ({
   currentTurn: 0,
 
   maxPO: 100,
-  currentPO: 30,
+  currentPO: 50,
 
-  currentCO: 666,
+  currentCO: 500,
   maxCO: 1000,
   goalCO: 220,
   reduceCO: 200,
@@ -42,6 +42,7 @@ export const gameReducer = (state, action) => {
         currentTurn: 1,
         spotMap: generateSpots(SPOTS_INITIAL_N),
       }
+
     case 'turn:next':
       if (state.gameResult) {
         return state
@@ -50,6 +51,7 @@ export const gameReducer = (state, action) => {
       const nextCO = calcNextCO(state.spotMap, state.currentCO) - state.reduceCO
       const nextPO = calcNextPO(state.spotMap, state.currentPO)
       const nextGameResult = calcNextGameResult(state, nextCO)
+
       return {
         ...state,
         gameResult: nextGameResult,
@@ -59,6 +61,7 @@ export const gameReducer = (state, action) => {
         currentPO: Math.max(0, Math.min(state.maxPO, nextPO)),
         currentTurn: nextTurn,
       }
+
     case 'spot:action':
       if (state.gameResult) {
         return state
@@ -66,34 +69,28 @@ export const gameReducer = (state, action) => {
       const spot = state.spotMap[action.payload.spotKey]
       const { marker } = spot
       if (!marker) throw new Error('WAT? No marker in spot, eh?')
-      if (!marker.requirePO) {
+      if (!marker.requirePO || marker.requirePO > state.currentPO) {
+        // Cannot interact with this marker — the debt must be payed
         return state
       }
 
-      if (marker.requirePO < state.currentPO) {
-        const { nextTypes } = markerTemplates[marker.type]
-        const nextMarker = nextTypes && getMarkerByType(getRndItem(nextTypes))
-        const spotMap = { ...state.spotMap }
+      const { nextTypes } = markerTemplates[marker.type]
+      const nextMarker = nextTypes && getMarkerByType(getRndItem(nextTypes))
+      const spotMap = { ...state.spotMap }
+      const currentPO = Math.min(state.maxPO, state.currentPO - marker.requirePO)
         
-        if (nextMarker) {
-          spotMap[spot.key] = {
-            ...spot,
-            marker: nextMarker
-          }
-        } else {
-          delete spotMap[spot.key]
+      if (nextMarker) {
+        spotMap[spot.key] = {
+          ...spot,
+          marker: nextMarker
         }
-
-
-        let nextState = {
-          ...state,
-          spotMap,
-          currentPO: Math.min(state.maxPO, state.currentPO - marker.requirePO),
-        }
-        return gameReducer(nextState, {type: 'turn:next'})
+      } else {
+        delete spotMap[spot.key]
       }
-      return state
-    default: throw new Error()
+
+      return gameReducer({ ...state, spotMap, currentPO }, {type: 'turn:next'})
+
+    default: throw new Error('OMG! Unknown action…')
   }
 }
 

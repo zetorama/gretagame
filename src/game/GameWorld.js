@@ -2,12 +2,20 @@ import React, {useRef, useMemo} from 'react'
 import { useFrame,  useLoader } from 'react-three-fiber'
 import * as THREE from 'three'
 import {useGameState} from './state'
+import { markerTemplates } from './helpers'
 
 import Spot from './Spot'
+
+const preloadUrls = [
+  ...Object.values(markerTemplates).map(({ iconUrl }) => iconUrl),
+]
 
 function GameWorld() {
   const ref = useRef()
   const [state, dispatch] = useGameState()
+
+  // preload assets
+  useLoader(THREE.TextureLoader, preloadUrls)
 
   console.log('%c RENDER GameWorld', 'color:orange', state)
   console.log('%c RENDER GameWorld ------', 'color:orange', Object.values(state.spotMap))

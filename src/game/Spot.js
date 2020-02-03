@@ -6,6 +6,8 @@ import { useSpring, a } from 'react-spring/three'
 import { useGameState } from './state'
 import {markerTemplates} from './helpers'
 
+export const WAIT_TO_ACTIVATE_MS = 600
+
 function Spot({ dispatch, spot, opacity = 1, scale = 1, ...props }) {
   const [{ currentPO }] = useGameState()
 
@@ -23,7 +25,7 @@ function Spot({ dispatch, spot, opacity = 1, scale = 1, ...props }) {
     actionRef.current = Date.now()
   }, [])
   const actionEnd = useCallback(() => {
-    if (actionRef.current && ((Date.now() - actionRef.current) >= 600)) {
+    if (actionRef.current && ((Date.now() - actionRef.current) >= WAIT_TO_ACTIVATE_MS)) {
       dispatch({
         type: 'spot:action',
         payload: {
@@ -33,24 +35,22 @@ function Spot({ dispatch, spot, opacity = 1, scale = 1, ...props }) {
     }
     actionRef.current = null
   }, [])
-  const { factor } = useSpring({ factor: hovered ? 1.5 : 1 })
-  const isInitedRef = useRef(false)
+  const { factor } = useSpring({ factor: marker.requirePO && hovered ? 1.5 : 1 })
+  const materialRef = useRef()
   const groupRef = useUpdate(() => {
     groupRef.current.lookAt(0, 0, 0)
   }, [])
+  
   useFrame(() => {
-    if (!isInitedRef.current) {
-      groupRef.current.lookAt(0, 0, 0)
-      isInitedRef.current = true
-    }
-
-    const isEnabled = marker.requirePO >= currentPO
-    groupRef.current.opacity = isEnabled ? 1 : .3
+    const isEnabled = marker.requirePO <= currentPO
+    materialRef.current.opacity = isEnabled ? 1 : .33
   })
 
   return (
-    <group ref={groupRef}
-      position={spot.position}>
+    <group 
+      ref={groupRef}
+      position={spot.position}
+    >
       <a.mesh
         {...props}
         onPointerOver={hover}
@@ -62,7 +62,7 @@ function Spot({ dispatch, spot, opacity = 1, scale = 1, ...props }) {
         rotation={[0, -Math.PI, 0]} 
       >
         <planeBufferGeometry attach="geometry" args={[.33, .33]} />
-        <meshStandardMaterial attach="material" transparent opacity={opacity} map={texture} side={THREE.DoubleSide} />
+        <meshStandardMaterial ref={materialRef} attach="material" transparent opacity={opacity} map={texture} side={THREE.DoubleSide} />
       </a.mesh>
     </group>
   )
