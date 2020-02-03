@@ -16,6 +16,7 @@ function Spot({ dispatch, spot, opacity = 1, scale = 1, ...props }) {
   const [texture] = useLoader(THREE.TextureLoader, [markerTemplates[marker.type].iconUrl])
   const [hovered, setHover] = useState(false)
   const actionRef = useRef(null)
+  const timeoutRef = useRef(null)
   const hover = useCallback(() => setHover(true), [])
   const unhover = useCallback(() => {
     setHover(false)
@@ -23,16 +24,40 @@ function Spot({ dispatch, spot, opacity = 1, scale = 1, ...props }) {
   }, [])
   const actionStart = useCallback(() => {
     actionRef.current = Date.now()
+    dispatch({ 
+      type: 'spinner:start', 
+      payload: { duration: WAIT_TO_ACTIVATE_MS },
+    })
+
+    // schedule auto-resolve
+    timeoutRef.current = setTimeout(() => {
+      timeoutRef.current = null
+      dispatch({
+        type: 'spot:action',
+        payload: { spotKey: spot.key },
+      })
+      dispatch({
+        type: 'spinner:stop',
+      })
+    }, WAIT_TO_ACTIVATE_MS)
   }, [])
   const actionEnd = useCallback(() => {
+    if (!timeoutRef.current) return
+
+    clearTimeout(timeoutRef.current)
+    timeoutRef.current = null
+
     if (actionRef.current && ((Date.now() - actionRef.current) >= WAIT_TO_ACTIVATE_MS)) {
       dispatch({
         type: 'spot:action',
-        payload: {
-          spotKey: spot.key,
-        }
+        payload: { spotKey: spot.key },
       })
     }
+
+    dispatch({
+      type: 'spinner:stop',
+    })
+
     actionRef.current = null
   }, [])
   const { factor } = useSpring({ factor: marker.requirePO && hovered ? 1.5 : 1 })
@@ -40,7 +65,7 @@ function Spot({ dispatch, spot, opacity = 1, scale = 1, ...props }) {
   const groupRef = useUpdate(() => {
     groupRef.current.lookAt(0, 0, 0)
   }, [])
-  
+
   useFrame(() => {
     const isEnabled = marker.requirePO <= currentPO
     materialRef.current.opacity = isEnabled ? 1 : .33
@@ -55,7 +80,7 @@ function Spot({ dispatch, spot, opacity = 1, scale = 1, ...props }) {
         {...props}
         onPointerOver={hover}
         onPointerOut={unhover}
-        onPointerDown={actionStart}
+        onPointerDown={marker.requirePO && marker.requirePO <= currentPO ? actionStart : undefined}
         onPointerUp={actionEnd}
         scale={factor.interpolate(f => [scale * f, scale * f, 1])}
         // flip hozintally, as we facing towards planet center

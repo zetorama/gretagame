@@ -4,7 +4,16 @@ import { useGameState } from './state'
 import './Ui.css'
 
 export function Ui({ children }) {
-  const [{ currentTurn, currentCO, maxCO, goalCO, currentPO, maxPO }, dispatch] = useGameState()
+  const [{ 
+    currentTurn, 
+    currentCO, 
+    maxCO, 
+    goalCO, 
+    currentPO, 
+    maxPO, 
+    spinner,
+  }, dispatch] = useGameState()
+  // const spinner = {}
 
   const isStarted = currentTurn > 0
   const currentYear = currentTurn + 2019
@@ -38,6 +47,10 @@ export function Ui({ children }) {
       <div className="Ui-canvas">
         {children}
         <div className="Ui-canvas-effect" style={{ '--opacity': effectOpacity }} />
+
+        {spinner && (
+          <div className="Ui-canvas-spinner" style={{ '--duration': spinner.duration }} />
+        )}
       </div>
       
       <footer className="Ui-footer">

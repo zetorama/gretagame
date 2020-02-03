@@ -9,6 +9,7 @@ export const GameContext = createContext([{}])
 export const useGameState = () => useContext(GameContext)
 
 export const getInitialGameState = () => ({
+  spinner: null,
   gameResult: null,
   currentTurn: 0,
 
@@ -36,6 +37,16 @@ export const gameReducer = (state, action) => {
   console.log('%c ACTION: gameReducer', 'color:crimson', action, state)
 
   switch (action.type) {
+    case 'spinner:start':
+      const { duration } = action.payload || {}
+      return {
+        ...state,
+        spinner: { duration },
+      }
+
+    case 'spinner:stop':
+      return { ...state, spinner: null, }
+
     case 'game:start':
       return {
         ...getInitialGameState(),
