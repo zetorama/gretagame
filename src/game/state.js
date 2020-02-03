@@ -10,7 +10,8 @@ export const getInitialGameState = () => ({
   gameResult: null,
   currentTurn: 0,
   currentCO: 66,
-  currentPO: 0,
+  currentPO: 50,
+  maxPO: 100,
   maxCO: 100,
   goalCO: 25,
   reduceCO: 5,
@@ -34,7 +35,7 @@ export const gameReducer = (state, action) => {
       return {
         ...getInitialGameState(),
         currentTurn: 1,
-        spotMap: generateSpots(10)
+        spotMap: generateSpots(100)
       }
     case 'turn:next':
       const nextTurn = state.currentTurn + 1
